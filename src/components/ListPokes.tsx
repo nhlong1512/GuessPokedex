@@ -1,4 +1,4 @@
-import { Button, Col, ConfigProvider } from "antd";
+import { Button, Col, ConfigProvider, Modal } from "antd";
 import React, { useState } from "react";
 import { PokemonDetail } from "../model/model";
 import PokeCard from "./PokeCard";
@@ -9,8 +9,7 @@ interface Props {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ListPokes: React.FC<Props> = ({ listPokemons}) => {
-
+const ListPokes: React.FC<Props> = ({ listPokemons }) => {
   return (
     <Col
       span={24}
@@ -21,7 +20,7 @@ const ListPokes: React.FC<Props> = ({ listPokemons}) => {
       }}
     >
       {listPokemons.map((item: PokemonDetail) => (
-        <PokeCard key={item.id} pokemonDetail={item} />
+          <PokeCard key={item.id} pokemonDetail={item} />
       ))}
     </Col>
   );

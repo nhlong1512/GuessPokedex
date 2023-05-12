@@ -30,7 +30,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     fetchPokemonList(URL_POKEMON);
   }, []);
-  console.log(listPokemons);
 
   const handleLoadMore = () => {
     fetchPokemonList(nextUrl);

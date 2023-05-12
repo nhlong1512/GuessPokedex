@@ -27,3 +27,4 @@ export interface PokeMonStats {
   base_stat: number;
   name: string;
 }
+
