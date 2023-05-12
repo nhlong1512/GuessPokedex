@@ -25,7 +25,7 @@ const PokeCard:React.FC<Prop> = ({pokemonDetail}) => {
         </div>
         <div className="bg-[#efefef] absolute h-[100px] w-full rounded-xl bottom-0"></div>
         <img src={pokemonDetail.sprites.front_default} alt="bulbasaur" className="w-[126px] h-[126px] resize-contain z-[1]"/>
-        <h3 className="text-[#1D1D1D] text-[20px] leading-[28px] font-[400] my-[8px] z-[1] uppercase">
+        <h3 className="text-[#1D1D1D] text-[20px] leading-[28px] font-[400] my-[8px] z-[1] capitalize">
           {pokemonDetail.name}
         </h3>
       </Col>
