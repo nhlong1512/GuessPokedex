@@ -22,8 +22,6 @@ const PokemonModal: React.FC<Props> = ({
   const [colorPoke, setColorPoke] = useState<string>("");
   const [pokemonSpecies, setPokemonSpecies] = useState<PokemonSpecies>();
   const t_type: string = pokemonDetail.types[0].type.name;
-  console.log(pokemonDetail);
-  console.log(pokemonDetail.stats[0].base_stat);
 
   useEffect(() => {
     pokemonTypes.forEach((p) => {
@@ -59,7 +57,7 @@ const PokemonModal: React.FC<Props> = ({
       >
         <div className="flex flex-row justify-between items-center">
           <div className="flex">
-            <img src={ArrowBack} alt="arrow_back" />
+            <img src={ArrowBack} alt="arrow_back" className="cursor-pointer" onClick={handleCancel} />
             <h3 className="text-[#fff] text-[24px] font-[700] my-0 capitalize ml-[16px]">
               {pokemonDetail.name}
             </h3>
@@ -78,16 +76,16 @@ const PokemonModal: React.FC<Props> = ({
           <img
             src={pokemonDetail.sprites.front_default}
             alt="pokemon"
-            className="flex justify-center h-[50%] w-[50%]"
+            className="flex justify-center h-[50%] w-[50%] mt-[-10px]"
           />
           <div
-            className="py-[4px] px-[10px] rounded-[20px] text-[#fff] text-[12px] font-[500] mt-[10px] capitalize"
+            className="py-[4px] px-[10px] rounded-[20px] text-[#fff] text-[12px] font-[500] capitalize mt-0"
             style={{ backgroundColor: colorPoke }}
           >
             {pokemonDetail.types[0].type.name}
           </div>
           <h3
-            className="text-[16px] font-[500] mt-[10px]"
+            className="text-[16px] font-[500] mt-0 mb-[10px]"
             style={{ color: colorPoke }}
           >
             About
@@ -138,7 +136,7 @@ const PokemonModal: React.FC<Props> = ({
             )}
           </p>
           <h3
-            className="text-[16px] font-[500] mt-[10px] text-center"
+            className="text-[16px] font-[500] mb-[10px] text-center mt-0"
             style={{ color: colorPoke }}
           >
             Base Stats
@@ -160,7 +158,7 @@ const PokemonModal: React.FC<Props> = ({
                     : pokemonDetail.stats[0].base_stat}
                 </p>
                 <Progress
-                  percent={pokemonDetail.stats[0].base_stat}
+                  percent={pokemonDetail.stats[0].base_stat * 1 / 2}
                   showInfo={false}
                   className="mb-[5px]"
                   strokeColor={colorPoke}
@@ -183,7 +181,7 @@ const PokemonModal: React.FC<Props> = ({
                     : pokemonDetail.stats[1].base_stat}
                 </p>
                 <Progress
-                  percent={pokemonDetail.stats[1].base_stat}
+                  percent={pokemonDetail.stats[1].base_stat * 1 / 2}
                   showInfo={false}
                   className="mb-[5px]"
                   strokeColor={`${colorPoke}`}
@@ -206,7 +204,7 @@ const PokemonModal: React.FC<Props> = ({
                     : pokemonDetail.stats[2].base_stat}
                 </p>
                 <Progress
-                  percent={pokemonDetail.stats[2].base_stat}
+                  percent={pokemonDetail.stats[2].base_stat * 1 / 2}
                   showInfo={false}
                   className="mb-[5px]"
                   strokeColor={`${colorPoke}`}
@@ -229,7 +227,7 @@ const PokemonModal: React.FC<Props> = ({
                     : pokemonDetail.stats[3].base_stat}
                 </p>
                 <Progress
-                  percent={pokemonDetail.stats[3].base_stat}
+                  percent={pokemonDetail.stats[3].base_stat * 1 / 2}
                   showInfo={false}
                   className="mb-[5px]"
                   strokeColor={`${colorPoke}`}
@@ -252,7 +250,7 @@ const PokemonModal: React.FC<Props> = ({
                     : pokemonDetail.stats[4].base_stat}
                 </p>
                 <Progress
-                  percent={pokemonDetail.stats[4].base_stat}
+                  percent={pokemonDetail.stats[4].base_stat * 1 / 2}
                   showInfo={false}
                   className="mb-[5px]"
                   strokeColor={`${colorPoke}`}
@@ -275,7 +273,7 @@ const PokemonModal: React.FC<Props> = ({
                     : pokemonDetail.stats[5].base_stat}
                 </p>
                 <Progress
-                  percent={pokemonDetail.stats[5].base_stat}
+                  percent={pokemonDetail.stats[5].base_stat * 1 / 2}
                   showInfo={false}
                   className="mb-[5px]"
                   strokeColor={`${colorPoke}`}

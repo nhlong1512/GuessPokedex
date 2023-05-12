@@ -57,10 +57,10 @@ export const pokemonTypes: PokemonType[] = [
   },
   {
     name: "dragon",
-    color: "#703ff",
+    color: "#7037ff",
   },
   {
-    name: "eletric",
+    name: "electric",
     color: "#f9cf30",
   },
   {
