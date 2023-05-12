@@ -16,6 +16,7 @@ const PokeCard: React.FC<Prop> = ({ pokemonDetail }) => {
   const showModal = () => {
     setIsModalOpen(true);
   };
+  
   return (
     <Col span={4} className="hover:cursor-pointer">
       <Col
@@ -46,7 +47,7 @@ const PokeCard: React.FC<Prop> = ({ pokemonDetail }) => {
           {pokemonDetail.name}
         </h3>
       </Col>
-      <PokemonModal pokemonDetail={pokemonDetail} isModalOpen ={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      {isModalOpen && <PokemonModal pokemonDetail={pokemonDetail} isModalOpen ={isModalOpen} setIsModalOpen={setIsModalOpen} />}
     </Col>
   );
 };

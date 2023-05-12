@@ -23,7 +23,6 @@ const Home: React.FC = () => {
         const sortedList = [...listPokemons, poke.data].sort((a, b) => a.id - b.id);
         return sortedList;
       });
-      // setListPokemons((listPokemons) => [...listPokemons, poke.data]);
       setLoading(false);
     });
   };

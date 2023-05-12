@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Col, Divider, Modal, Progress } from "antd";
-import Bulbasaur from "../assets/images/Bulbasaur.png";
-import { PokemonDetail } from "../model/model";
+import { PokemonDetail, PokemonSpecies, pokemonTypes } from "../model/model";
 import ArrowBack from "../assets/icons/arrow_back.svg";
 import weight from "../assets/icons/weight.png";
 import straighten from "../assets/icons/straighten.png";
+import api from "../api";
 
 interface Props {
   pokemonDetail: PokemonDetail;
@@ -20,6 +19,30 @@ const PokemonModal: React.FC<Props> = ({
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const [colorPoke, setColorPoke] = useState<string>("");
+  const [pokemonSpecies, setPokemonSpecies] = useState<PokemonSpecies>();
+  const t_type: string = pokemonDetail.types[0].type.name;
+  console.log(pokemonDetail);
+  console.log(pokemonDetail.stats[0].base_stat);
+
+  useEffect(() => {
+    pokemonTypes.forEach((p) => {
+      if (p.name === t_type) {
+        setColorPoke(p.color);
+        return;
+      }
+    });
+  }, [t_type]);
+
+  const fetchSpecies = async () => {
+    const res = await api.get(`pokemon-species/${pokemonDetail.id}`);
+    let pokemonSpecies: PokemonSpecies = res.data;
+    setPokemonSpecies(pokemonSpecies);
+  };
+  useEffect(() => {
+    fetchSpecies();
+  }, []);
+
   return (
     <Modal
       open={isModalOpen}
@@ -27,10 +50,13 @@ const PokemonModal: React.FC<Props> = ({
       footer={null}
       closeIcon={undefined}
       closable={false}
-      width={420}
+      width={440}
       centered={true}
     >
-      <div className="bg-[#74cb48] py-[20px] px-[24px] relative flex flex-col rounded-[8px]">
+      <div
+        className="py-[20px] px-[24px] relative flex flex-col rounded-[8px]"
+        style={{ backgroundColor: colorPoke }}
+      >
         <div className="flex flex-row justify-between items-center">
           <div className="flex">
             <img src={ArrowBack} alt="arrow_back" />
@@ -54,17 +80,25 @@ const PokemonModal: React.FC<Props> = ({
             alt="pokemon"
             className="flex justify-center h-[50%] w-[50%]"
           />
-          <div className="py-[4px] px-[10px] rounded-[20px] text-[#fff] text-[12px] font-[500] bg-[#74cb48] mt-[10px]">
-            Grass
+          <div
+            className="py-[4px] px-[10px] rounded-[20px] text-[#fff] text-[12px] font-[500] mt-[10px] capitalize"
+            style={{ backgroundColor: colorPoke }}
+          >
+            {pokemonDetail.types[0].type.name}
           </div>
-          <h3 className="text-[16px] font-[500] text-[#74cb48] mt-[10px]">
+          <h3
+            className="text-[16px] font-[500] mt-[10px]"
+            style={{ color: colorPoke }}
+          >
             About
           </h3>
           <div className="flex justify-between gap-[80px]">
             <div className="flex flex-col">
               <div className="flex flex-row justify-center items-center">
                 <img src={weight} alt="weight" className="w-[14px] h-[14px]" />
-                <p className="ml-[12px] text-[14px] my-0 font-[500]">8.5 kg</p>
+                <p className="ml-[12px] text-[14px] my-0 font-[500]">
+                  {pokemonDetail.weight}kg
+                </p>
               </div>
               <p className="text-[12px] text-[#666] text-center font-[500] mb-0 my-[12px]">
                 Weight
@@ -78,7 +112,9 @@ const PokemonModal: React.FC<Props> = ({
                   className="w-[14px] h-[14px]"
                   style={{ transform: "rotate(90deg)" }}
                 />
-                <p className="ml-[12px] text-[14px] my-0 font-[500]">0.6m</p>
+                <p className="ml-[12px] text-[14px] my-0 font-[500]">
+                  {pokemonDetail.height}m
+                </p>
               </div>
               <p className="text-[12px] text-[#666] text-center font-[500] mb-0 my-[12px]">
                 Height
@@ -86,113 +122,163 @@ const PokemonModal: React.FC<Props> = ({
             </div>
             <div className="flex flex-col">
               <div className="flex flex-row justify-center items-center">
-                <p className="text-[14px] my-0 font-[500]">Overgrow</p>
+                <p className="text-[14px] my-0 font-[500] capitalize">
+                  {pokemonDetail.moves[0].move.name}
+                </p>
               </div>
               <p className="text-[12px] text-[#666] text-center font-[500] mb-0 my-[12px]">
                 Moves
               </p>
             </div>
           </div>
-          <p className="desc text-[14px] leading-[20px] font-[400]">
-            {`It can go for days\nwithout eating a\nsingle morsel.\fIn the bulb on\nits back, it\nstores energy.`}
+          <p className="desc text-[14px] leading-[20px] font-[500]">
+            {pokemonSpecies?.flavor_text_entries[0].flavor_text.replace(
+              /\f/g,
+              ""
+            )}
           </p>
-          <h3 className="text-[16px] font-[500] text-[#74cb48] mt-[10px] text-center">
+          <h3
+            className="text-[16px] font-[500] mt-[10px] text-center"
+            style={{ color: colorPoke }}
+          >
             Base Stats
           </h3>
           <div className="flex w-full flex-col">
             <div className="flex w-full justify-center items-center">
               <div className="flex w-full justify-start items-center">
-                <h3 className="m-0 text-[14px] font-[500] text-[#74cb48]">
-                  HP
-                </h3>
+                <Col span={2}>
+                  <h3
+                    className="m-0 text-[14px] font-[500]"
+                    style={{ color: colorPoke }}
+                  >
+                    HP
+                  </h3>
+                </Col>
                 <p className="m-0 ml-[30px] text-[12px] font-[500] mr-[10px]">
-                  045
+                  {pokemonDetail.stats[0].base_stat < 100
+                    ? `0${pokemonDetail.stats[0].base_stat}`
+                    : pokemonDetail.stats[0].base_stat}
                 </p>
                 <Progress
-                  percent={50}
+                  percent={pokemonDetail.stats[0].base_stat}
                   showInfo={false}
                   className="mb-[5px]"
-                  strokeColor={"#74cb48"}
+                  strokeColor={colorPoke}
                 />
               </div>
             </div>
             <div className="flex w-full justify-center items-center">
               <div className="flex w-full justify-start items-center">
-                <h3 className="m-0 text-[14px] font-[500] text-[#74cb48]">
-                  HP
-                </h3>
+                <Col span={2}>
+                  <h3
+                    className="m-0 text-[14px] font-[500]"
+                    style={{ color: colorPoke }}
+                  >
+                    ATK
+                  </h3>
+                </Col>
                 <p className="m-0 ml-[30px] text-[12px] font-[500] mr-[10px]">
-                  045
+                  {pokemonDetail.stats[1].base_stat < 100
+                    ? `0${pokemonDetail.stats[1].base_stat}`
+                    : pokemonDetail.stats[1].base_stat}
                 </p>
                 <Progress
-                  percent={50}
+                  percent={pokemonDetail.stats[1].base_stat}
                   showInfo={false}
                   className="mb-[5px]"
-                  strokeColor={"#74cb48"}
+                  strokeColor={`${colorPoke}`}
                 />
               </div>
             </div>
             <div className="flex w-full justify-center items-center">
               <div className="flex w-full justify-start items-center">
-                <h3 className="m-0 text-[14px] font-[500] text-[#74cb48]">
-                  HP
-                </h3>
+                <Col span={2}>
+                  <h3
+                    className="m-0 text-[14px] font-[500]"
+                    style={{ color: colorPoke }}
+                  >
+                    DEF
+                  </h3>
+                </Col>
                 <p className="m-0 ml-[30px] text-[12px] font-[500] mr-[10px]">
-                  045
+                  {pokemonDetail.stats[2].base_stat < 100
+                    ? `0${pokemonDetail.stats[2].base_stat}`
+                    : pokemonDetail.stats[2].base_stat}
                 </p>
                 <Progress
-                  percent={50}
+                  percent={pokemonDetail.stats[2].base_stat}
                   showInfo={false}
                   className="mb-[5px]"
-                  strokeColor={"#74cb48"}
+                  strokeColor={`${colorPoke}`}
                 />
               </div>
             </div>
             <div className="flex w-full justify-center items-center">
               <div className="flex w-full justify-start items-center">
-                <h3 className="m-0 text-[14px] font-[500] text-[#74cb48]">
-                  HP
-                </h3>
+                <Col span={2}>
+                  <h3
+                    className="m-0 text-[14px] font-[500]"
+                    style={{ color: colorPoke }}
+                  >
+                    SATK
+                  </h3>
+                </Col>
                 <p className="m-0 ml-[30px] text-[12px] font-[500] mr-[10px]">
-                  045
+                  {pokemonDetail.stats[3].base_stat < 100
+                    ? `0${pokemonDetail.stats[3].base_stat}`
+                    : pokemonDetail.stats[3].base_stat}
                 </p>
                 <Progress
-                  percent={50}
+                  percent={pokemonDetail.stats[3].base_stat}
                   showInfo={false}
                   className="mb-[5px]"
-                  strokeColor={"#74cb48"}
+                  strokeColor={`${colorPoke}`}
                 />
               </div>
             </div>
             <div className="flex w-full justify-center items-center">
               <div className="flex w-full justify-start items-center">
-                <h3 className="m-0 text-[14px] font-[500] text-[#74cb48]">
-                  HP
-                </h3>
+                <Col span={2}>
+                  <h3
+                    className="m-0 text-[14px] font-[500]"
+                    style={{ color: colorPoke }}
+                  >
+                    SDEF
+                  </h3>
+                </Col>
                 <p className="m-0 ml-[30px] text-[12px] font-[500] mr-[10px]">
-                  045
+                  {pokemonDetail.stats[4].base_stat < 100
+                    ? `0${pokemonDetail.stats[4].base_stat}`
+                    : pokemonDetail.stats[4].base_stat}
                 </p>
                 <Progress
-                  percent={50}
+                  percent={pokemonDetail.stats[4].base_stat}
                   showInfo={false}
                   className="mb-[5px]"
-                  strokeColor={"#74cb48"}
+                  strokeColor={`${colorPoke}`}
                 />
               </div>
             </div>
             <div className="flex w-full justify-center items-center">
               <div className="flex w-full justify-start items-center">
-                <h3 className="m-0 text-[14px] font-[500] text-[#74cb48]">
-                  HP
-                </h3>
+                <Col span={2}>
+                  <h3
+                    className="m-0 text-[14px] font-[500]"
+                    style={{ color: colorPoke }}
+                  >
+                    SPD
+                  </h3>
+                </Col>
                 <p className="m-0 ml-[30px] text-[12px] font-[500] mr-[10px]">
-                  045
+                  {pokemonDetail.stats[5].base_stat < 100
+                    ? `0${pokemonDetail.stats[5].base_stat}`
+                    : pokemonDetail.stats[5].base_stat}
                 </p>
                 <Progress
-                  percent={50}
+                  percent={pokemonDetail.stats[5].base_stat}
                   showInfo={false}
                   className="mb-[5px]"
-                  strokeColor={"#74cb48"}
+                  strokeColor={`${colorPoke}`}
                 />
               </div>
             </div>
