@@ -6,7 +6,7 @@ import Home from "./assets/pages/Home";
 
 const App = () => {
   return (
-    <div className="App bg-main">
+    <div className="App bg-main min-h-screen pb-[40px]">
       <NavBar />
       <Home />
     </div>

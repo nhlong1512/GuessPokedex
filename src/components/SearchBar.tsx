@@ -5,7 +5,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 const SearchBar = () => {
   return (
-    <Col span={20} offset={2} className="mt-[40px]">
+    <Col span={20} offset={2} className="mt-[20px]">
       <div className="flex shadow-[0px_30px_60px_-12px_rgba(50, 50, 93, 0.25)]">
         <div className="absolute inset-y-0 left-0 flex items-center pl-[40px] pointer-events-none">
           <img src={SearchIcon} alt="search" className="w-[24px] h-[24px]" />
