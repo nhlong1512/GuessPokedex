@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 
-const NavBarWrapper = () => {
+const NavBarWrapper:React.FC = () => {
   return (
-    <div className="bg-main">
+    <div className="bg-main h-full pb-[48px]">
       <NavBar />
       <Outlet />
     </div>

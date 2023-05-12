@@ -3,7 +3,7 @@ import { Col, Input } from "antd";
 import SearchIcon from "../assets/icons/search.svg"
 import { AiOutlineSearch } from "react-icons/ai";
 
-const SearchBar = () => {
+const SearchBar:React.FC = () => {
   return (
     <Col span={20} offset={2} className="mt-[20px]">
       <div className="flex shadow-[0px_30px_60px_-12px_rgba(50, 50, 93, 0.25)]">

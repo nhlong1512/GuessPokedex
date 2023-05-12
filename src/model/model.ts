@@ -46,6 +46,28 @@ export interface PokemonType {
   color: string;
 }
 
+
+export interface FormDataSignIn {
+  email: string;
+  password: string;
+}
+
+export interface FormDataSignUp {
+  fullName: string;
+  email:string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface User {
+  id: string;
+  fullName: string | null;
+  email: string | null;
+  photoURL: string | null;
+  phoneNumber: string | null;
+}
+
+
 export const pokemonTypes: PokemonType[] = [
   {
     name: "bug",

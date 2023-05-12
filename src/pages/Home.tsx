@@ -4,6 +4,9 @@ import ListPokes from "../components/ListPokes";
 import SearchBar from "../components/SearchBar";
 import api from "../api";
 import { PokemonDetail, Pokemon } from "../model/model";
+import { useAppDispatch, useAppSelector } from "../app/hook";
+import { auth } from "../firebaseConfig";
+import { selectUser, signIn, signOut } from "../features/userSlice";
 
 const URL_POKEMON = "/pokemon?limit=20&offset=0";
 const Home: React.FC = () => {
@@ -20,7 +23,9 @@ const Home: React.FC = () => {
     pokemons.forEach(async (pokemon: Pokemon) => {
       const poke = await api.get(pokemon.url);
       setListPokemons((listPokemons) => {
-        const sortedList = [...listPokemons, poke.data].sort((a, b) => a.id - b.id);
+        const sortedList = [...listPokemons, poke.data].sort(
+          (a, b) => a.id - b.id
+        );
         return sortedList;
       });
       setLoading(false);
@@ -33,6 +38,8 @@ const Home: React.FC = () => {
   const handleLoadMore = () => {
     fetchPokemonList(nextUrl);
   };
+
+  
 
   return (
     <Col span={24} className="bg-main h-[100%]">
