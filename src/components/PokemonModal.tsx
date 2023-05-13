@@ -111,7 +111,7 @@ const PokemonModal: React.FC<Props> = ({
                   style={{ transform: "rotate(90deg)" }}
                 />
                 <p className="ml-[12px] text-[14px] my-0 font-[500]">
-                  {pokemonDetail.height}m
+                  {pokemonDetail.height / 10}m
                 </p>
               </div>
               <p className="text-[12px] text-[#666] text-center font-[500] mb-0 my-[12px]">

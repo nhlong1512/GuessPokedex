@@ -53,7 +53,12 @@ const NavBar: React.FC = () => {
     <Col className="py-[20px] bg-main">
       <Col span={20} offset={2} className="flex justify-between items-center">
         <Col span={16} className="flex items-center">
-          <Col className="flex">
+          <Col
+            className="flex cursor-pointer"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <img
               src={Logo}
               alt="logo"
@@ -64,12 +69,17 @@ const NavBar: React.FC = () => {
             </h3>
           </Col>
           <Col offset={1}>
-            <h3 className="text-[#fff] text-[20px] my-0 font-[500]">
+            <h3
+              className="text-[#fff] text-[20px] my-0 font-[500] cursor-pointer"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               All Pokémon
             </h3>
           </Col>
           <Col offset={1}>
-            <h3 className="text-[#fff] text-[20px] my-0 font-[500]">
+            <h3 className="text-[#fff] text-[20px] my-0 font-[500] cursor-pointer" onClick = {() => {navigate('/game')}}>
               Play Game
             </h3>
           </Col>
