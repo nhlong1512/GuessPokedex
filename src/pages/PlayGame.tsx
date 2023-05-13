@@ -41,8 +41,8 @@ const PlayGame: React.FC = () => {
   };
 
   //Result game
-  const [OTP, setOTP] = useState<string>("");
-  // const onChangeResult = (value: string) => setOtp(value);
+  const [otp, setOtp] = useState('');
+  const onChangeResult = (value: string) => setOtp(value);
 
   return (
     <Col
@@ -54,6 +54,9 @@ const PlayGame: React.FC = () => {
           "rgba(0, 0, 0, 0.19) 0px -10px -20px, rgba(0, 0, 0, 0.23) 0px -6px -6px",
       }}
     >
+      <h3 className="mb-[20px] mt-0 text-[24px] leading-[32px]" style = {{color: colorPoke}}>
+        Streak : 1
+      </h3>
       <div
         className="py-[20px] px-[24px] relative flex flex-col rounded-[8px]"
         style={{ backgroundColor: colorPoke }}
@@ -357,11 +360,12 @@ const PlayGame: React.FC = () => {
         </div>
       </div>
       <div className="mt-[40px]">
-        {/* <ResultCodeField
+        <ResultCodeField
           value={otp}
-          valueLength={20}
+          valueLength={8}
           onChangeResult={onChangeResult}
-        /> */}
+          colorPoke = {colorPoke}
+        />
       </div>
     </Col>
   );
