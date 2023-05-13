@@ -37,11 +37,9 @@ const ResultCodeField: React.FC<Props> = ({
     const target = e.target;
     let targetValue = target.value;
     targetValue = 1 ? targetValue : " ";
-    const newValue =
-      value.substring(0, idx) + targetValue + value.substring(idx + 1);
+    const newValue = value.substring(0, idx) + targetValue + value.substring(idx + 1);
     onChangeResult(newValue);
-    const nextElementSibling =
-      target.nextElementSibling as HTMLInputElement | null;
+    const nextElementSibling = target.nextElementSibling as HTMLInputElement | null;
     const nextInputEl = target.nextElementSibling as HTMLInputElement | null;
     if (nextElementSibling) {
       nextElementSibling.focus();
@@ -61,6 +59,10 @@ const ResultCodeField: React.FC<Props> = ({
       e.preventDefault();
       return focusToPrevInput(target);
     }
+    // if(key==="Enter") {
+    //   e.preventDefault();
+
+    // }
     const targetValue = target.value;
     // keep the selection range position
     // if the same digit was typed
