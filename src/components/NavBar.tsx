@@ -4,7 +4,7 @@ import type { MenuProps } from "antd";
 import Logo from "../assets/icons/pokeball.svg";
 import userImg from "../assets/images/user.png";
 import { useAppDispatch, useAppSelector } from "../app/hook";
-import { selectUser, signIn, signOut } from "../features/userSlice";
+import { selectUser, signOut } from "../features/userSlice";
 import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
@@ -13,32 +13,13 @@ const NavBar: React.FC = () => {
   //Authentication
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
-      if (userAuth) {
-        //Logged in
-        dispatch(
-          signIn({
-            id: userAuth.uid,
-            email: userAuth.email,
-            fullName: userAuth.displayName,
-            photoURL: userAuth.photoURL,
-            phoneNumber: userAuth.phoneNumber,
-          })
-        );
-      } else {
-        //Logged out
-        dispatch(signOut());
-      }
-    });
-    return unsubscribe;
-  }, [dispatch]);
   console.log(user);
 
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: `${user?.email}`,
+      label: <p className="bg-[#ccc] text-[16px] my-0">{user?.email}</p>,
+      disabled: true,
     },
     {
       key: "2",
@@ -55,13 +36,17 @@ const NavBar: React.FC = () => {
   ];
 
   const onClick: MenuProps["onClick"] = ({ key }) => {
+    if (key === "2") {
+      navigate("/profile");
+      return;
+    }
     if (key === "4") {
       auth.signOut();
       dispatch(signOut());
-      navigate("/sign-in")
-    }else {
+      navigate("/sign-in");
       return;
     }
+    return;
   };
 
   return (
@@ -96,7 +81,7 @@ const NavBar: React.FC = () => {
           <Dropdown menu={{ items, onClick }}>
             <a
               onClick={(e) => e.preventDefault()}
-              className="flex justify-end items-center"
+              className="flex justify-end items-center rouneded-[100%]"
             >
               <img
                 src={userImg}

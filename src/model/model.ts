@@ -62,8 +62,8 @@ export interface FormDataSignUp {
 export interface User {
   id: string;
   fullName: string | null;
-  email: string | null;
-  photoURL: string | null;
+  email: string | null | undefined;
+  photoURL: string | undefined |null;
   phoneNumber: string | null;
 }
 
