@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { FormDataSignIn } from "../model/model";
 import { auth } from "../firebaseConfig";
 import BgRequire from "../assets/images/Thumbnail.svg";
+import { useAppDispatch } from "../app/hook";
+import { setUser } from "../features/userSlice";
+import { User } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const styleBgRequire: React.CSSProperties = {
   backgroundImage: `url(${BgRequire})`,
@@ -24,6 +28,7 @@ const styleBgGradient: React.CSSProperties = {
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const initialState: FormDataSignIn = {
     email: "",
     password: "",
@@ -47,12 +52,13 @@ const SignIn: React.FC = () => {
       return;
     }
     if (email && password) {
-      auth
-        .signInWithEmailAndPassword(email, password)
+      signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           //Signed in
           const user = userCredential.user;
+
           console.log(user);
+          dispatch(setUser(user));
           navigate("/");
         })
         .catch((error) => {

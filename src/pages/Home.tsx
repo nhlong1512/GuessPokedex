@@ -6,7 +6,7 @@ import api from "../api";
 import { PokemonDetail, Pokemon } from "../model/model";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import { auth } from "../firebaseConfig";
-import { selectUser, signIn, signOut } from "../features/userSlice";
+import { selectUser, setUser, signOut } from "../features/userSlice";
 
 const URL_POKEMON = "/pokemon?limit=20&offset=0";
 const Home: React.FC = () => {
@@ -14,7 +14,8 @@ const Home: React.FC = () => {
   const [listPokemons, setListPokemons] = useState<PokemonDetail[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [nextUrl, setNextUrl] = useState<string>("");
-
+  const search: string | null | undefined = useAppSelector((state) => state.search.searchPoke);
+  console.log(search);
   const fetchPokemonList = async (url: string) => {
     setLoading(true);
     const res = await api.get(url);

@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Button, Col, ConfigProvider, Divider, Dropdown, Space } from "antd";
+import {
+  Button,
+  Col,
+  ConfigProvider,
+  Divider,
+  Dropdown,
+  Space,
+  Spin,
+} from "antd";
 import type { MenuProps } from "antd";
 import Logo from "../assets/icons/pokeball.svg";
 import userImg from "../assets/images/user.png";
@@ -79,7 +87,12 @@ const NavBar: React.FC = () => {
             </h3>
           </Col>
           <Col offset={1}>
-            <h3 className="text-[#fff] text-[20px] my-0 font-[500] cursor-pointer" onClick = {() => {navigate('/game')}}>
+            <h3
+              className="text-[#fff] text-[20px] my-0 font-[500] cursor-pointer"
+              onClick={() => {
+                navigate("/game");
+              }}
+            >
               Play Game
             </h3>
           </Col>
@@ -98,9 +111,13 @@ const NavBar: React.FC = () => {
                 alt="userImg"
                 className="h-[50px] w-[50px] mr-[12px]"
               />
-              <p className="text-[#fff] text-[14px] my-0 font-[500]">
-                {user?.fullName}
-              </p>
+              {user ? (
+                <p className="text-[#fff] text-[14px] my-0 font-[500]">
+                  {user?.displayName}
+                </p>
+              ) : (
+                <Spin />
+              )}
             </a>
           </Dropdown>
         </Col>

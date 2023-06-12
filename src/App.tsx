@@ -8,30 +8,27 @@ import SignUp from "./pages/SignUp";
 import PlayGame from "./pages/PlayGame";
 import NavBarWrapper from "./components/NavBarWrapper";
 import { auth } from "./firebaseConfig";
-import { signIn, signOut } from "./features/userSlice";
+import { setUser, signOut } from "./features/userSlice";
 import Profile from "./pages/Profile";
 import { useAppDispatch } from "./app/hook";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const App = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
-      if (userAuth) {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
         //Logged in
-        dispatch(
-          signIn({
-            id: userAuth.uid,
-            email: userAuth.email,
-            fullName: userAuth.displayName,
-            photoURL: userAuth.photoURL,
-            phoneNumber: userAuth.phoneNumber,
-          })
-        );
+        dispatch(setUser(user))
+        // navigate("/");
+        return;
       } else {
         //Logged out
         dispatch(signOut());
-        navigate("/sign-in")
+        navigate("/sign-in");
       }
     });
     return unsubscribe;
@@ -44,7 +41,7 @@ const App = () => {
       <Route path="/" element={<NavBarWrapper />}>
         <Route path="/" element={<Home />} />
         <Route path="/game" element={<PlayGame />} />
-        <Route path ="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );

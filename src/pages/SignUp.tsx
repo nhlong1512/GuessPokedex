@@ -3,7 +3,10 @@ import { Col, ConfigProvider, Form, Input, message } from "antd";
 import BgRequire from "../assets/images/Thumbnail.svg";
 import { useNavigate } from "react-router-dom";
 import { FormDataSignUp } from "../model/model";
-import { auth } from "../firebaseConfig";
+import { auth, db, addDoc, collection } from "../firebaseConfig";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useAppDispatch } from "../app/hook";
+import { setUser } from "../features/userSlice";
 
 const styleBgRequire: React.CSSProperties = {
   backgroundImage: `url(${BgRequire})`,
@@ -24,6 +27,7 @@ const styleBgGradient: React.CSSProperties = {
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
   const initialState: FormDataSignUp = {
     fullName: "",
     email: "",
@@ -56,21 +60,42 @@ const SignUp: React.FC = () => {
       return;
     }
     if (password === confirmPassword) {
-      auth
-        .createUserWithEmailAndPassword(email, password)
+      createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          //Signed in
           const user = userCredential.user;
-          user?.updateProfile({
+          updateProfile(user, {
             displayName: fullName,
           });
-          navigate("/");
+          dispatch(setUser(user))
+          addDbUser(user?.uid, fullName, email, "", "");
+          navigate("/")
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
         });
+    }
+  };
+
+  const addDbUser = async (
+    id: string,
+    fullName: string,
+    email: string,
+    phoneNumber: string,
+    photoURL: string
+  ) => {
+    try {
+      const docRef = await addDoc(collection(db, "users"), {
+        id: id,
+        fullName: fullName,
+        email: email,
+        phoneNumber: phoneNumber,
+        photoURL: photoURL,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
     }
   };
 

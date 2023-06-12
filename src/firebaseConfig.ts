@@ -1,6 +1,10 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import "firebase/database";
+import { getDatabase } from 'firebase/database';
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, APP_ID, MESSAGING_SENDER_ID } from './config';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7DA62gHv8ys0n3yW3NRR9tAEUaRgKNfw",
@@ -13,7 +17,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-const db = firebaseApp.firestore();
+const db = getFirestore(firebaseApp);
+const database = getDatabase(firebaseApp);
 const auth = firebase.auth();
-export {auth}
-export default db;
+export {auth, database, db, collection, addDoc};

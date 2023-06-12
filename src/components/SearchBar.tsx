@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Input } from "antd";
 import SearchIcon from "../assets/icons/search.svg"
 import { AiOutlineSearch } from "react-icons/ai";
+import { useAppDispatch } from "../app/hook";
+import { searchPoke } from "../features/searchPokeSlice";
 
 const SearchBar:React.FC = () => {
+  const dispatch = useAppDispatch();
   const [searchInput, setSearchInput] = useState<string>("");
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchInput(e.target.value);
   };
   
+  useEffect(() => {
+    dispatch(searchPoke(searchInput))
+  }, [searchInput])
   if (searchInput.length > 0) {
       //Dispatch action to search
+
   };
   
   return (
