@@ -64,7 +64,8 @@ export interface User {
   fullName: string | null;
   email: string | null | undefined;
   photoURL: string | undefined |null;
-  phoneNumber: string | null;
+  phoneNumber: string | null | undefined;
+  score: number;
 }
 
 

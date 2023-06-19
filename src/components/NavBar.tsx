@@ -50,8 +50,6 @@ const NavBar: React.FC = () => {
     }
     if (key === "4") {
       auth.signOut();
-      dispatch(signOut());
-      navigate("/sign-in");
       return;
     }
     return;
@@ -113,7 +111,7 @@ const NavBar: React.FC = () => {
               />
               {user ? (
                 <p className="text-[#fff] text-[14px] my-0 font-[500]">
-                  {user?.displayName}
+                  {user?.fullName}
                 </p>
               ) : (
                 <Spin />

@@ -3,10 +3,11 @@ import { Col, ConfigProvider, Form, Input, message } from "antd";
 import BgRequire from "../assets/images/Thumbnail.svg";
 import { useNavigate } from "react-router-dom";
 import { FormDataSignUp } from "../model/model";
-import { auth, db, addDoc, collection } from "../firebaseConfig";
+import { auth, db, addDoc} from "../firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAppDispatch } from "../app/hook";
 import { setUser } from "../features/userSlice";
+import { collection, doc, setDoc } from "firebase/firestore"; 
 
 const styleBgRequire: React.CSSProperties = {
   backgroundImage: `url(${BgRequire})`,
@@ -66,8 +67,9 @@ const SignUp: React.FC = () => {
           updateProfile(user, {
             displayName: fullName,
           });
-          dispatch(setUser(user))
-          addDbUser(user?.uid, fullName, email, "", "");
+          if(user?.uid === undefined) return;
+          addDbUser(user?.uid, fullName, email, "", "", 0);
+          dispatch(setUser({id: user.uid, fullName: fullName, email: email, photoURL:"", phoneNumber:"", score:0}))
           navigate("/")
         })
         .catch((error) => {
@@ -83,17 +85,19 @@ const SignUp: React.FC = () => {
     fullName: string,
     email: string,
     phoneNumber: string,
-    photoURL: string
+    photoURL: string,
+    score: number,
   ) => {
     try {
-      const docRef = await addDoc(collection(db, "users"), {
+      const userRef = collection(db, "users")
+      await setDoc(doc(userRef, id),{
         id: id,
         fullName: fullName,
         email: email,
         phoneNumber: phoneNumber,
         photoURL: photoURL,
-      });
-      console.log("Document written with ID: ", docRef.id);
+      }) 
+      console.log("Document written with ID: ", userRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }

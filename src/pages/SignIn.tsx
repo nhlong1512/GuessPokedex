@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Col, ConfigProvider, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FormDataSignIn } from "../model/model";
-import { auth } from "../firebaseConfig";
+import { auth, db } from "../firebaseConfig";
 import BgRequire from "../assets/images/Thumbnail.svg";
 import { useAppDispatch } from "../app/hook";
 import { setUser } from "../features/userSlice";
 import { User } from "firebase/auth";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 const styleBgRequire: React.CSSProperties = {
   backgroundImage: `url(${BgRequire})`,
@@ -53,12 +54,21 @@ const SignIn: React.FC = () => {
     }
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
           //Signed in
           const user = userCredential.user;
-
           console.log(user);
-          dispatch(setUser(user));
+          if (user?.uid === undefined) return;
+          const userRef = doc(db, "users", user?.uid);
+          const docSnap = await getDoc(userRef);
+          if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+          } else {
+            // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+          }
+
+          // dispatch(setUser(user));
           navigate("/");
         })
         .catch((error) => {
