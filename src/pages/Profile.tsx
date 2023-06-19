@@ -55,12 +55,20 @@ const Profile = () => {
   const dispatch = useAppDispatch();
   let user: User | null = useAppSelector((state) => state.user.currentUser);
   console.log("User: ", user);
+  console.log(user?.phoneNumber);
+  
 
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
   const [phoneNumberText, setPhoneNumberText] = useState<
     string | null | undefined
-  >("");
+  >(user?.phoneNumber);
+  useEffect(() => {
+    setPhoneNumberText(user?.phoneNumber);
+  }, [user?.phoneNumber]);
+  console.log(phoneNumberText); 
+  
+  
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -150,34 +158,13 @@ const Profile = () => {
         <Col span={18} offset={3} className="mt-[40px] mb-[40px]">
           <Row className="mt-[40px] flex items-center justify-between">
             <div className="flex items-center gap-[40px]">
-              {/* <img
+              <img
                 src={user?.photoURL ? user.photoURL : userImg}
                 alt="userImg"
                 className="h-[160px] w-[160px] rounded-[100px] object-cover cursor-pointer"
                 style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
-              /> */}
-              <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-circle"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChangeImg}
-                className="h-[160px] w-[160px] rounded-[100px] object-cover cursor-pointer"
-              >
-                {fileList.length >= 8 ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-              </Upload>
-              <Modal
-                open={previewOpen}
-                title={previewTitle}
-                footer={null}
-                onCancel={handleCancel}
-              >
-                <img
-                  alt="example"
-                  style={{ width: "100%" }}
-                  src={previewImage}
-                />
-              </Modal>
+              />
+              
               <div>
                 <h3 className="text-[28px] my-0">Profile</h3>
                 <p className="my-0">Update your photo and personal details.</p>
@@ -193,7 +180,7 @@ const Profile = () => {
           </Row>
           <Row className="flex w-full mt-[40px]">
             <h3 className="text-[20px] my-0 text-[#dc0a2d]">
-              Your highest score: 0
+              Your highest score: {user?.score}
             </h3>
           </Row>
           <Divider />
@@ -243,7 +230,7 @@ const Profile = () => {
                   placeholder="Your phone"
                   type="number"
                   name="phone"
-                  value={user?.phoneNumber ? user.phoneNumber : ""}
+                  value = {phoneNumberText||""}
                   onChange={handleChange}
                   className="font-[500] px-[8px] py-[10px] rounded-[4px] min-w-[300px]"
                 />

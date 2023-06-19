@@ -96,6 +96,7 @@ const SignUp: React.FC = () => {
         email: email,
         phoneNumber: phoneNumber,
         photoURL: photoURL,
+        score: score,
       }) 
       console.log("Document written with ID: ", userRef.id);
     } catch (e) {

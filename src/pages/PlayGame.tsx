@@ -1,11 +1,15 @@
 import { Button, Col, ConfigProvider, message, Progress } from "antd";
 import React, { useEffect, useState } from "react";
 import api from "../api";
-import { PokemonDetail, PokemonSpecies, pokemonTypes } from "../model/model";
+import { PokemonDetail, PokemonSpecies, pokemonTypes, User } from "../model/model";
 import weight from "../assets/icons/weight.png";
 import straighten from "../assets/icons/straighten.png";
 import ResultCodeField from "../components/ResultCodeField";
 import GameOverImg from "../assets/images/game_over.png";
+import { useAppDispatch, useAppSelector } from "../app/hook";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { setUser } from "../features/userSlice";
 
 const PlayGame: React.FC = () => {
   const [pokemonDetail, setPokemonDetail] = useState<PokemonDetail>();
@@ -80,8 +84,32 @@ const PlayGame: React.FC = () => {
   //Handle CountStreak
   const [countStreak, setCountStreak] = useState<number>(0);
 
+  let user: User | null = useAppSelector((state) => state.user.currentUser);
+  const dispatch = useAppDispatch();
+
+  const setCurrentStreak = async () => {
+    if (user?.id === undefined) return;
+    const userRef = doc(db, "users", user?.id);
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      console.log(docSnap.data().score);
+      console.log('test',countStreak)
+      if(countStreak > docSnap.data().score) {
+        await updateDoc(userRef, {
+          score: countStreak,
+        });
+        dispatch(setUser({ ...user, score: countStreak }));
+      }
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+    
+  }
+
   //Handle Enter Result
-  const handleEnterResult = () => {
+  const handleEnterResult = async () => {
     let pokemonName = otp;
     if (pokemonName === pokemonDetail?.name) {
       setCountStreak(countStreak + 1);
@@ -98,6 +126,7 @@ const PlayGame: React.FC = () => {
   };
   useEffect(() => {
     console.log("countStreak", countStreak);
+    setCurrentStreak();
   }, [countStreak]);
 
   //Handle New Game
@@ -158,7 +187,7 @@ const PlayGame: React.FC = () => {
             className="mb-[20px] mt-0 text-[24px] leading-[32px]"
             style={{ color: colorPoke }}
           >
-            {`Streak : ${countStreak}`}
+            {`Score: ${countStreak}`}
           </h3>
           <div
             className="py-[20px] px-[24px] relative flex flex-col rounded-[8px]"
