@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import { useAppDispatch, useAppSelector } from "./app/hook";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import Rank from "./pages/Rank";
 
 const App = () => {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ const App = () => {
       <Route path="/" element={<NavBarWrapper />}>
         <Route path="/" element={<Home />} />
         <Route path="/game" element={<PlayGame />} />
+        <Route path="/rank" element={<Rank />} />
         <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>

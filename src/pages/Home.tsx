@@ -43,7 +43,7 @@ const Home: React.FC = () => {
   
 
   return (
-    <Col span={24} className="bg-main h-[100%]">
+    <Col span={24} className="bg-main h-[100vh]">
       <SearchBar />
       <Col
         span={22}

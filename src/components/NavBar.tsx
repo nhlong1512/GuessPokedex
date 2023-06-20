@@ -95,7 +95,14 @@ const NavBar: React.FC = () => {
             </h3>
           </Col>
           <Col offset={1}>
-            <h3 className="text-[#fff] text-[20px] my-0 font-[500]">Rank</h3>
+            <h3
+              className="text-[#fff] text-[20px] my-0 font-[500] cursor-pointer"
+              onClick={() => {
+                navigate("/rank");
+              }}
+            >
+              Rank
+            </h3>
           </Col>
         </Col>
         <Col span={8} className="flex justify-end items-center gap-[12px]">

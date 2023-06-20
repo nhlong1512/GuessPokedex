@@ -9,7 +9,7 @@ import NavBar from "./NavBar";
 const NavBarWrapper:React.FC = () => {
   
   return (
-    <div className="bg-main h-full">
+    <div className="bg-main h-full min-h-[100vh]">
       <NavBar />
       <Outlet />
       <Footer/>
